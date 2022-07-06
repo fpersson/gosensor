@@ -1,0 +1,11 @@
+{
+    "sensor" : "28-0417a2f482ff",
+    "name" : "test1",
+    "influx" : {
+        "host" : "http://192.168.1.229:8086",
+        "token" : "telegraf:apa",
+        "api_org" : "telegraf",
+        "bucket" : "telegraf",
+        "interval" : "1"
+    }
+}
