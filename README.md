@@ -1,3 +1,5 @@
+![example workflow](https://github.com/fpersson/gosensor/actions/workflows/go.yml/badge.svg)
+
 # Usage
 
 ## Hardware Requirement
