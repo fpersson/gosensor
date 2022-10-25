@@ -19,7 +19,7 @@ jobs:
         go-version: 1.18
 
     - name: Build
-      run: go build -v ./../sensor/.
+      run: go build -v ./../sensor
 
     - name: Test
       run: go test -cover -v ./../libsensor/.
