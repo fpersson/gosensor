@@ -1,4 +1,4 @@
-package module
+package libsensor
 
 import (
 	"io/ioutil"

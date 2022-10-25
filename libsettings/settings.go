@@ -1,4 +1,4 @@
-package module
+package libsettings
 
 type Settings struct {
 	Sensor  string       `json:"sensor"`

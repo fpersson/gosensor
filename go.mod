@@ -1,4 +1,4 @@
-module pi/sensor
+module github.com/fpersson/gosensor
 
 go 1.18
 

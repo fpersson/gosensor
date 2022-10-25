@@ -1,4 +1,4 @@
-package module
+package libsettings
 
 import (
 	"encoding/json"
@@ -22,8 +22,7 @@ func ParseSettings(file string) (Settings, error) {
 	byteValue, err := ioutil.ReadAll(jsonFile)
 
 	if err != nil {
-		fmt.Println(err)
-		return result, nil
+		return result, err
 	}
 
 	json.Unmarshal(byteValue, &result)

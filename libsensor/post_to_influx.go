@@ -1,12 +1,13 @@
-package module
+package libsensor
 
 import (
 	"time"
 
+	libsettings "github.com/fpersson/gosensor/libsettings"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
-func Post(dbconf Settings, data float64) error {
+func Post(dbconf libsettings.Settings, data float64) error {
 	client := influxdb2.NewClient(dbconf.Influx.Host, dbconf.Influx.Token)
 	writeAPI := client.WriteAPI(dbconf.Influx.Apiorg, dbconf.Influx.Bucket)
 

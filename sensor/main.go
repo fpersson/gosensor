@@ -4,10 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"pi/sensor/module"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fpersson/gosensor/libsensor"
+	libsettings "github.com/fpersson/gosensor/libsettings"
 )
 
 const configfile = "tempsensor/settings.json"
@@ -42,7 +44,7 @@ func main() {
 
 	settingsfile := findConfigFile(configdir)
 
-	conf, err := module.ParseSettings(settingsfile)
+	conf, err := libsettings.ParseSettings(settingsfile)
 
 	if err != nil {
 		fmt.Println(err)
@@ -63,14 +65,14 @@ func main() {
 	}
 
 	for {
-		val, err := module.ReadSensor(path)
+		val, err := libsensor.ReadSensor(path)
 
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(0)
 		}
 
-		err = module.Post(conf, val)
+		err = libsensor.Post(conf, val)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(0)
