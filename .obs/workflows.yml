@@ -4,4 +4,4 @@ workflow:
         project: home:fpersson
         package: gosensor
   filters:
-    event: push_tag
+    event: push
