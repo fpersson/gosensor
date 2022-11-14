@@ -9,16 +9,19 @@
 
 ## build
 ```bash
+    cd sensor
     go install
 ```
 
 ### build for rpi-zero
 ```bash
+    cd sensor
     GOOS=linux GOARCH=arm go build -o sensor main.go
 ```
 
 ### build for rpi 3/4
 ```bash
+    cd sensor
     GOOS=linux GOARCH=arm64 go build -o sensor main.go
 ```
 
