@@ -3,3 +3,5 @@ workflow:
     - rebuild_package:
         project: home:fpersson
         package: gosensor
+  filters:
+    event: push
