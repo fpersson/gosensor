@@ -1,0 +1,5 @@
+workflow:
+  steps:
+    - rebuild_package:
+        project: home:fpersson
+        package: gosensor
