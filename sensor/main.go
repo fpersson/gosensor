@@ -64,18 +64,28 @@ func main() {
 		interval = 1
 	}
 
+	found := true
+	posted := true
+
 	for {
 		val, err := libsensor.ReadSensor(path)
 
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(0)
-		}
-
-		err = libsensor.Post(conf, val)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(0)
+			if found == true {
+				fmt.Println(err)
+				found = false
+				posted = true
+			}
+		} else {
+			found = true
+			err = libsensor.Post(conf, val)
+			if err != nil {
+				if posted == true {
+					fmt.Println(err)
+					posted = false
+					found = true
+				}
+			}
 		}
 		time.Sleep(time.Duration(interval) * time.Second)
 	}
