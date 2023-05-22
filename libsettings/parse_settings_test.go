@@ -5,7 +5,7 @@ import "testing"
 func TestParseSettings(t *testing.T) {
 	var settings Settings
 
-	settings.Influx.Host = "http://192.168.1.229:8086"
+	settings.Influx.Host = "http://192.168.1.228:8086"
 	settings.Influx.Token = "telegraf:apa"
 	settings.Influx.Apiorg = "telegraf"
 	settings.Influx.Bucket = "telegraf"
