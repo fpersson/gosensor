@@ -11,7 +11,7 @@ func Post(dbconf libsettings.Settings, data float64) error {
 	client := influxdb2.NewClient(dbconf.Influx.Host, dbconf.Influx.Token)
 	writeAPI := client.WriteAPI(dbconf.Influx.Apiorg, dbconf.Influx.Bucket)
 
-	point := influxdb2.NewPoint("sensor_1",
+	point := influxdb2.NewPoint(dbconf.Name,
 		map[string]string{"unit": "temperature"},
 		map[string]interface{}{"last": data},
 		time.Now())

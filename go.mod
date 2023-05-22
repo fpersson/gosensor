@@ -11,5 +11,4 @@ require (
 	github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.7.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

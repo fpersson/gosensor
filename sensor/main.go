@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/fpersson/gosensor/libsensor"
@@ -67,26 +69,44 @@ func main() {
 	found := true
 	posted := true
 
-	for {
-		val, err := libsensor.ReadSensor(path)
+	ticker := time.NewTicker(time.Duration(interval) * time.Second)
+	defer ticker.Stop()
+	done := make(chan bool)
 
-		if err != nil {
-			if found == true {
-				fmt.Println(err)
-				found = false
-				posted = true
-			}
-		} else {
-			found = true
-			err = libsensor.Post(conf, val)
-			if err != nil {
-				if posted == true {
-					fmt.Println(err)
-					posted = false
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case <-ticker.C:
+				val, err := libsensor.ReadSensor(path)
+
+				if err != nil {
+					if found {
+						fmt.Println(err)
+						found = false
+						posted = true
+					}
+				} else {
 					found = true
+					err = libsensor.Post(conf, val)
+					if err != nil {
+						if posted {
+							fmt.Println(err)
+							posted = false
+							found = true
+						}
+					}
 				}
 			}
 		}
-		time.Sleep(time.Duration(interval) * time.Second)
-	}
+	}()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, syscall.SIGTERM)
+
+	sig := <-sigChan
+	fmt.Println("Sigterm: ", sig)
+	done <- true
 }

@@ -34,6 +34,10 @@ Default path for config files is $XDG_DATA_DIRS/tempsensor
     CONFIG=. ~/go/bin/sensor
 ```
 
+```bash
+    CONFIG=./testdata DEVICE=./fejksensor/ go run ./sensor
+```
+
 ## Grafana dashboard
 ```sql
     SELECT mean("last") FROM "sensor_1" WHERE ("unit" = 'temperature') AND $timeFilter GROUP BY time($__interval) fill(null)
@@ -44,23 +48,18 @@ Default path for config files is $XDG_DATA_DIRS/tempsensor
 ### Setup DS18B20
 Your DS18B20 should be connected to pin 7 (BCM4), gnd, and 3v.
 
-Edit /boot/config.txt
+Edit config.txt on raspbian it can be found in /boot nad opensuse it can be found in /boot/efi/
+config.txt
 ```bash
 # Enable gpio for DS18BS20
 dtoverlay=w1-gpio,pinout=4,pullup=on
 ```
 
-Edit /etc/modules
+Reastart your system, check for /sys/bus/w1/devices/28-xxxxxxxxxx. If your device does not show up try:
 ```bash
-# /etc/modules: kernel modules to load at boot time.
-#
-# This file contains the names of kernel modules that should be loaded
-# at boot time, one per line. Lines beginning with "#" are ignored.
-w1-gpio pullup=1
-w1-therm strong_pullup=1
+    sudo modprobe w1-gpio
+    sudo modprobe w1-therm
 ```
-
-check for /sys/bus/w1/devices/28-xxxxxxxxxx
 
 ## Note
 This is the go version of [tempSensor](https://github.com/fpersson/tempSensor)
