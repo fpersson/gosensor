@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"os/signal"
 	"strconv"
@@ -12,6 +11,7 @@ import (
 
 	"github.com/fpersson/gosensor/libsensor"
 	libsettings "github.com/fpersson/gosensor/libsettings"
+	"golang.org/x/exp/slog"
 )
 
 const configfile = "tempsensor/settings.json"
@@ -27,7 +27,6 @@ func findConfigFile(configpaths string) (confile string) {
 
 	for _, element := range v {
 		file := element + "/" + configfile
-		fmt.Println(file)
 		if exists(file) {
 			return file
 		}
@@ -37,7 +36,10 @@ func findConfigFile(configpaths string) (confile string) {
 }
 
 func main() {
-	fmt.Println("Start")
+	loggHandler := slog.NewTextHandler(os.Stdout, nil)
+	logger := slog.New(loggHandler)
+
+	logger.Info("Start")
 	configdir := os.Getenv("CONFIG")
 
 	if configdir == "" {
@@ -49,7 +51,7 @@ func main() {
 	conf, err := libsettings.ParseSettings(settingsfile)
 
 	if err != nil {
-		fmt.Println(err)
+		logger.Info(err.Error())
 		os.Exit(0)
 	}
 
@@ -60,6 +62,8 @@ func main() {
 	}
 
 	path := device + conf.Sensor + "/w1_slave"
+
+	logger.Info(path)
 	interval, err := strconv.ParseInt(conf.Influx.Interval, 10, 0)
 
 	if err != nil {
@@ -83,7 +87,7 @@ func main() {
 
 				if err != nil {
 					if found {
-						fmt.Println(err)
+						logger.Info(err.Error())
 						found = false
 						posted = true
 					}
@@ -92,7 +96,7 @@ func main() {
 					err = libsensor.Post(conf, val)
 					if err != nil {
 						if posted {
-							fmt.Println(err)
+							logger.Info(err.Error())
 							posted = false
 							found = true
 						}
@@ -107,6 +111,6 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGTERM)
 
 	sig := <-sigChan
-	fmt.Println("Sigterm: ", sig)
+	logger.Info(sig.String())
 	done <- true
 }
