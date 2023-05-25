@@ -11,6 +11,7 @@ import (
 
 	"github.com/fpersson/gosensor/libsensor"
 	libsettings "github.com/fpersson/gosensor/libsettings"
+	"github.com/fpersson/gosensor/webservice"
 	"golang.org/x/exp/slog"
 )
 
@@ -77,6 +78,8 @@ func main() {
 	defer ticker.Stop()
 	done := make(chan bool)
 
+	myWebservice := webservice.NewWebService(logger)
+
 	go func() {
 		for {
 			select {
@@ -105,6 +108,7 @@ func main() {
 			}
 		}
 	}()
+	go myWebservice.Start()
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt)

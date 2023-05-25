@@ -43,6 +43,11 @@ Default path for config files is $XDG_DATA_DIRS/tempsensor
     SELECT mean("last") FROM "sensor_1" WHERE ("unit" = 'temperature') AND $timeFilter GROUP BY time($__interval) fill(null)
 ```
 
+## Health Check
+```
+    http://localhost:8081/health_check
+```
+
 ## Hardware
 
 ### Setup DS18B20
