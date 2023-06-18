@@ -29,8 +29,10 @@ func (webservice *WebService) Start() {
 	}
 
 	healtCheck := handlers.NewHealthCheck(webservice.logger)
+	indexPage := handlers.NewIndexPage(webservice.logger)
 	serveMux.Handle("/healthcheck", healtCheck)
 	serveMux.Handle("/health_check", healtCheck)
+	serveMux.Handle("/index.html", indexPage)
 
 	err := server.ListenAndServe()
 
