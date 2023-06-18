@@ -12,6 +12,7 @@ import (
 	"github.com/fpersson/gosensor/libsensor"
 	libsettings "github.com/fpersson/gosensor/libsettings"
 	"github.com/fpersson/gosensor/webservice"
+	"github.com/fpersson/gosensor/webservice/model"
 	"golang.org/x/exp/slog"
 )
 
@@ -22,7 +23,7 @@ func exists(path string) bool {
 	return !errors.Is(err, os.ErrNotExist)
 }
 
-///TODO flytta och testa denna funktionen
+// /TODO flytta och testa denna funktionen
 func findConfigFile(configpaths string) (confile string) {
 	v := strings.Split(configpaths, ":")
 
@@ -47,9 +48,10 @@ func main() {
 		configdir = os.Getenv("XDG_DATA_DIRS")
 	}
 
-	settingsfile := findConfigFile(configdir)
+	//settingsfile := findConfigFile(configdir)
+	model.SettingsPath = findConfigFile(configdir)
 
-	conf, err := libsettings.ParseSettings(settingsfile)
+	conf, err := libsettings.ParseSettings(model.SettingsPath)
 
 	if err != nil {
 		logger.Info(err.Error())

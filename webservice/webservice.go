@@ -17,7 +17,7 @@ func NewWebService(logger *slog.Logger) *WebService {
 }
 
 func (webservice *WebService) Start() {
-	webservice.logger.Info("Start called...")
+	webservice.logger.Info("Start called.")
 
 	serveMux := http.NewServeMux()
 	server := &http.Server{
@@ -30,9 +30,20 @@ func (webservice *WebService) Start() {
 
 	healtCheck := handlers.NewHealthCheck(webservice.logger)
 	indexPage := handlers.NewIndexPage(webservice.logger)
+	settingsPage := handlers.NewSettingsHandler(webservice.logger)
+	updatePage := handlers.NewUpdateSettings(webservice.logger)
+	logPage := handlers.NewLogHandle(webservice.logger)
+	restartService := handlers.NewRestartSensor(webservice.logger)
+	rebootPage := handlers.NewReboot(webservice.logger)
 	serveMux.Handle("/healthcheck", healtCheck)
 	serveMux.Handle("/health_check", healtCheck)
 	serveMux.Handle("/index.html", indexPage)
+	serveMux.Handle("/status.html", indexPage)
+	serveMux.Handle("/settings.html", settingsPage)
+	serveMux.Handle("/log.html", logPage)
+	serveMux.Handle("/restart.html", rebootPage)
+	serveMux.Handle("/update", updatePage)
+	serveMux.Handle("/reboot_system", restartService)
 
 	err := server.ListenAndServe()
 
