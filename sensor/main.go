@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/signal"
 	"strconv"
@@ -18,12 +19,13 @@ import (
 
 const configfile = "tempsensor/settings.json"
 
+// /TODO Move this
 func exists(path string) bool {
 	_, err := os.Stat(path)
 	return !errors.Is(err, os.ErrNotExist)
 }
 
-// /TODO flytta och testa denna funktionen
+// /TODO Move this
 func findConfigFile(configpaths string) (confile string) {
 	v := strings.Split(configpaths, ":")
 
@@ -38,7 +40,19 @@ func findConfigFile(configpaths string) (confile string) {
 }
 
 func main() {
+	model.LogDir = os.Getenv("LOGDIR")
 	loggHandler := slog.NewTextHandler(os.Stdout, nil)
+
+	if model.LogDir != "" {
+		f, err := os.OpenFile(model.LogDir, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Println("wtf")
+		}
+		loggHandler = slog.NewTextHandler(f, nil)
+	} else {
+		fmt.Println("Not using file logger")
+	}
+
 	logger := slog.New(loggHandler)
 
 	logger.Info("Start")
@@ -48,7 +62,6 @@ func main() {
 		configdir = os.Getenv("XDG_DATA_DIRS")
 	}
 
-	//settingsfile := findConfigFile(configdir)
 	model.SettingsPath = findConfigFile(configdir)
 
 	conf, err := libsettings.ParseSettings(model.SettingsPath)

@@ -34,8 +34,14 @@ Default path for config files is $XDG_DATA_DIRS/tempsensor
     CONFIG=. ~/go/bin/sensor
 ```
 
+With test device, the DEVICE is a fake device for testing
 ```bash
     CONFIG=./testdata DEVICE=./fejksensor/ go run ./sensor
+```
+
+With logging to file
+```bash
+    LOGDIR=./testlog.log CONFIG=./testdata DEVICE=./fejksensor/ go run ./sensor
 ```
 
 ## Grafana dashboard

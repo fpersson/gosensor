@@ -16,7 +16,7 @@ type HealthCheck struct {
 }
 
 func NewHealthCheck(logger *slog.Logger) *HealthCheck {
-	logger.Info("HealthCheck cStor called")
+	logger.Info("New HealthCheck created")
 	return &HealthCheck{logger}
 }
 

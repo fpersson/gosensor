@@ -18,6 +18,7 @@ func NewLogHandle(log *slog.Logger) *LogHandle {
 }
 
 func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var data = &model.AllMessages{}
 	logHandle.log.Info("(OPEN): " + model.HttpDir + "templates/logPage.html")
 	logPage := model.LogPage{}
 	osinfo, err := syscmd.ParseOsRelease(syscmd.OsReleasePath)
@@ -32,9 +33,20 @@ func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logPage.NavPages = GetMenu(r.URL.Path)
 
 	logHandle.log.Info("Reading logs")
-	data, err := syscmd.ReadLog()
-	if err != nil {
-		logHandle.log.Info(err.Error())
+	if model.LogDir == "" {
+		logHandle.log.Info("Reading from systemd")
+		logContent, err := syscmd.ReadLog()
+		if err != nil {
+			logHandle.log.Info(err.Error())
+		}
+		data = logContent
+	} else {
+		logHandle.log.Info("Read log:", "file", model.LogDir)
+		logContent, err := syscmd.ReadLogFile(model.LogDir)
+		if err != nil {
+			logHandle.log.Info(err.Error())
+		}
+		data = logContent
 	}
 
 	logPage.AllMessages = *data

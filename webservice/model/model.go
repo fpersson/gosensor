@@ -8,6 +8,7 @@ import (
 
 var SettingsPath string
 var HttpDir string
+var LogDir string
 
 // FooterData struct for info to show in footer
 type FooterData struct {

@@ -1,6 +1,8 @@
 package syscmd
 
 import (
+	"bufio"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -23,6 +25,26 @@ func ReadLog() (data *model.AllMessages, err error) {
 
 	v := strings.Split(string(stdout), "\n")
 	retval.LogMessages = &v
+
+	return &retval, nil
+}
+
+func ReadLogFile(logfile string) (data *model.AllMessages, err error) {
+	retval := model.AllMessages{}
+	readFile, err := os.Open(logfile)
+	if err != nil {
+		return nil, err
+	}
+	defer readFile.Close()
+
+	buffer := bufio.NewScanner(readFile)
+	buffer.Split(bufio.ScanLines)
+	var d []string
+	for buffer.Scan() {
+		d = append(d, buffer.Text())
+	}
+
+	retval.LogMessages = &d
 
 	return &retval, nil
 }
