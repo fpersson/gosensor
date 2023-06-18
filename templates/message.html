@@ -1,0 +1,8 @@
+{{define "content"}}
+<div class="alert alert-success">
+    <h3>Status: <strong>Active</strong></h3>
+    {{ range . }}
+        {{.}}<br/>
+    {{ end }}
+</div>
+{{end}}

@@ -1,0 +1,10 @@
+{{define "content"}}
+<div class="alert alert-danger">
+    <h3>Status: <strong>Error</strong></h3>
+    {{ if . }}
+        {{ range . }}
+            {{.}}<br/>
+        {{ end }}
+    {{ end }}
+</div>
+{{end}}

@@ -18,9 +18,6 @@ jobs:
       with:
         go-version: 1.20.0
 
-    - name: Fuck Microsoft
-      run: go version
-
     - name: Init mods
       run: go mod download && go mod verify
 
@@ -32,3 +29,9 @@ jobs:
 
     - name: TestSettings
       run: cd ./libsettings && go test -cover -v ./...
+
+    - name: TestSysCmd
+      run: cd ./syscmd && go test -cover -v ./...
+
+    - name: TestHandlers
+      run: cd ./webservice/handlers && go test -cover -v ./...

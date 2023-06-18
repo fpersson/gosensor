@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        <title>DEMO</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
+    <body>
+    {{ template "navbar" . }}
+    <div class="container">
+            <!--TODO implement reboot or restart-->
+            <div class="alert alert-danger">
+                <strong>NOTE!</strong> this is restart page, need to be implemented....
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Sensor</h3>
+                            <p class="card-text">Restart temperature sensor.</p>
+                            <form class="form-horizontal" method="POST" action="/restart_sensor">
+                                <input type="submit" class="btn btn-primary" value="Restart">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Web UI</h3>
+                            <p class="card-text">Restart web ui.</p>
+                            <form class="form-horizontal" method="POST" action="/restart_webui">
+                                <input type="submit" class="btn btn-primary" value="Restart">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Reboot</h3>
+                            <p class="card-text">System reboot.</p>
+                            <form class="form-horizontal" method="POST" action="/reboot_system">
+                                <input type="submit" class="btn btn-primary" value="Reboot">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!--container-->
+        {{ template "footer" . }}
+
+    </body>
+</html>

@@ -1,0 +1,21 @@
+{{define "navbar"}}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Demo</a>
+    </div>
+    <ul class="nav navbar-nav">
+      {{ if .NavPages.NavPage }}
+        {{ range .NavPages.NavPage }}
+          {{ if .IsActive }}
+            <li class="active">
+          {{ else }}
+            <li>
+          {{end}}
+            <a href="{{.Url}}">{{.Name}}</a></li>
+        {{end}}
+      {{end}}
+    </ul>
+  </div>
+</nav>
+{{end}}
