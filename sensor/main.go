@@ -40,6 +40,7 @@ func findConfigFile(configpaths string) (confile string) {
 }
 
 func main() {
+	model.HttpDir = os.Getenv("HTTPDIR")
 	model.LogDir = os.Getenv("LOGDIR")
 	loggHandler := slog.NewTextHandler(os.Stdout, nil)
 
