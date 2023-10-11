@@ -13,5 +13,5 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 )
