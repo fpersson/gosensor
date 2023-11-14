@@ -1,6 +1,6 @@
 module github.com/fpersson/gosensor
 
-go 1.20
+go 1.21.4
 
 require (
 	github.com/influxdata/influxdb-client-go/v2 v2.12.2
