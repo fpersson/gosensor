@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"text/template"
 
+	"log/slog"
+
 	"github.com/fpersson/gosensor/syscmd"
 	"github.com/fpersson/gosensor/webservice/model"
-	"golang.org/x/exp/slog"
 )
 
 type Reboot struct {

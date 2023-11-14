@@ -3,8 +3,9 @@ package handlers
 import (
 	"net/http"
 
+	"log/slog"
+
 	"github.com/fpersson/gosensor/syscmd"
-	"golang.org/x/exp/slog"
 )
 
 type RestartSensor struct {

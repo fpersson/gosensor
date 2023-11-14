@@ -16,7 +16,7 @@
 ### build for rpi-zero
 ```bash
     cd sensor
-    GOOS=linux GOARCH=arm go build -o sensor main.go
+    GOOS=linux GOARCH=arm GOARM=6 go build -o sensor main.go
 ```
 
 ### build for rpi 3/4

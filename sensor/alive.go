@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"golang.org/x/exp/slog"
+	"log/slog"
 )
 
 // print "alive" to logs at given interval

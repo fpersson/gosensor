@@ -10,11 +10,12 @@ import (
 	"syscall"
 	"time"
 
+	"log/slog"
+
 	"github.com/fpersson/gosensor/libsensor"
 	libsettings "github.com/fpersson/gosensor/libsettings"
 	"github.com/fpersson/gosensor/webservice"
 	"github.com/fpersson/gosensor/webservice/model"
-	"golang.org/x/exp/slog"
 )
 
 const configfile = "tempsensor/settings.json"

@@ -5,8 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"log/slog"
+
 	"github.com/fpersson/gosensor/webservice/model"
-	"golang.org/x/exp/slog"
 )
 
 // UpdateSettings Handeler

@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"time"
 
+	"log/slog"
+
 	"github.com/fpersson/gosensor/webservice/handlers"
-	"golang.org/x/exp/slog"
 )
 
 type WebService struct {
