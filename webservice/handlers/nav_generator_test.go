@@ -12,22 +12,22 @@ func TestGetMenuStatusActive(t *testing.T) {
 	var content = model.NavPage{}
 
 	content.Name = "Status"
-	content.Url = "/status.html"
+	content.Url = "/sensor/status.html"
 	content.IsActive = true
 	result.NavPage = append(result.NavPage, content)
 
 	content.Name = "Settings"
-	content.Url = "/settings.html"
+	content.Url = "/sensor/settings.html"
 	content.IsActive = false
 	result.NavPage = append(result.NavPage, content)
 
 	content.Name = "Log"
-	content.Url = "/log.html"
+	content.Url = "/sensor/log.html"
 	content.IsActive = false
 	result.NavPage = append(result.NavPage, content)
 
 	content.Name = "Restart"
-	content.Url = "/restart.html"
+	content.Url = "/sensor/restart.html"
 	content.IsActive = false
 	result.NavPage = append(result.NavPage, content)
 
@@ -35,7 +35,7 @@ func TestGetMenuStatusActive(t *testing.T) {
 		in    string
 		wants model.NavPages
 	}{
-		{"/status.html", result},
+		{"/sensor/status.html", result},
 	}
 
 	for _, c := range cases {
