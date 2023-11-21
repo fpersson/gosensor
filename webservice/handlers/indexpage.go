@@ -32,7 +32,9 @@ func (indexPage *IndexPage) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	statusPage.FooterData.OsVersion = osinfo["VERSION_ID"]
 
 	statusPage.NavPages = GetMenu(r.URL.Path)
-	indexPage.log.Info("Reading status")
+	indexPage.log.Info("Reading status",
+		slog.String("url", r.URL.Path),
+	)
 
 	data, err := syscmd.ReadStatus()
 	if err != nil {
