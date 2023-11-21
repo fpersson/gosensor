@@ -38,6 +38,7 @@ func (webservice *WebService) Start() {
 	rebootPage := handlers.NewReboot(webservice.logger)
 	serveMux.Handle("/healthcheck", healtCheck)
 	serveMux.Handle("/health_check", healtCheck)
+	serveMux.Handle("/", indexPage)
 	serveMux.Handle("/index.html", indexPage)
 	serveMux.Handle("/status.html", indexPage)
 	serveMux.Handle("/settings.html", settingsPage)
