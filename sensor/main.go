@@ -16,6 +16,8 @@ import (
 	libsettings "github.com/fpersson/gosensor/libsettings"
 	"github.com/fpersson/gosensor/webservice"
 	"github.com/fpersson/gosensor/webservice/model"
+
+	"github.com/joho/godotenv"
 )
 
 const configfile = "tempsensor/settings.json"
@@ -41,6 +43,10 @@ func findConfigFile(configpaths string) (confile string) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("no .env file found")
+	}
 	model.HttpDir = os.Getenv("HTTPDIR")
 	model.LogDir = os.Getenv("LOGDIR")
 	loggHandler := slog.NewTextHandler(os.Stdout, nil)

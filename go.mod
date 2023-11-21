@@ -2,7 +2,10 @@ module github.com/fpersson/gosensor
 
 go 1.21.4
 
-require github.com/influxdata/influxdb-client-go/v2 v2.12.2
+require (
+	github.com/influxdata/influxdb-client-go/v2 v2.12.2
+	github.com/joho/godotenv v1.5.1
+)
 
 require (
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect

@@ -54,6 +54,17 @@ With logging to file
     http://localhost:8081/health_check
 ```
 
+## Supported env
+You can add some configurations as env or in .env
+
+| env          | default         | Note                            |
+|--------------|-----------------|---------------------------------|
+| CONFIG       | $XDG_DATA_DIRS  | path to your configuration      |
+| HTTPDIR      |                 | override default http           |
+| DEVICE       |                 | override device dir for testing |
+| LOGDIR       |                 | define file to log to           |
+| ALIVE        | 5               | values given in minutes         |
+
 ## Hardware
 
 ### Setup DS18B20
