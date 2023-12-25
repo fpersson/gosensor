@@ -1,13 +1,13 @@
 package libsensor
 
 import (
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func ReadSensor(sensor string) (float64, error) {
-	content, err := ioutil.ReadFile(sensor)
+	content, err := os.ReadFile(sensor)
 	if err != nil {
 		return 0, err
 	}

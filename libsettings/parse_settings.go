@@ -3,7 +3,7 @@ package libsettings
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -19,7 +19,7 @@ func ParseSettings(file string) (Settings, error) {
 
 	defer jsonFile.Close()
 
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 
 	if err != nil {
 		return result, err

@@ -8,22 +8,22 @@ func GetMenu(current_url string) (result model.NavPages) {
 	var content = model.NavPage{}
 
 	content.Name = "Status"
-	content.Url = "/sensor/status.html"
+	content.Url = "/status.html"
 	content.IsActive = false
 	tempnav.NavPage = append(tempnav.NavPage, content)
 
 	content.Name = "Settings"
-	content.Url = "/sensor/settings.html"
+	content.Url = "/settings.html"
 	content.IsActive = false
 	tempnav.NavPage = append(tempnav.NavPage, content)
 
 	content.Name = "Log"
-	content.Url = "/sensor/log.html"
+	content.Url = "/log.html"
 	content.IsActive = false
 	tempnav.NavPage = append(tempnav.NavPage, content)
 
 	content.Name = "Restart"
-	content.Url = "/sensor/restart.html"
+	content.Url = "/restart.html"
 	content.IsActive = false
 	tempnav.NavPage = append(tempnav.NavPage, content)
 

@@ -2,7 +2,7 @@ package model
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -91,7 +91,7 @@ func ListAllSettings() (settings Settings, err error) {
 		return result, err
 	}
 
-	b, err := ioutil.ReadAll(jsonFile)
+	b, err := io.ReadAll(jsonFile)
 
 	if err != nil {
 		return result, err
