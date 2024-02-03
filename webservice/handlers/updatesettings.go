@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
+	"os"
 
 	"log/slog"
 
@@ -43,7 +43,7 @@ func (updateSettings *UpdateSettings) ServeHTTP(w http.ResponseWriter, r *http.R
 			updateSettings.log.Info(err.Error())
 		}
 
-		err = ioutil.WriteFile(model.SettingsPath, data, 0666)
+		err = os.WriteFile(model.SettingsPath, data, 0666)
 
 		if err != nil {
 			updateSettings.log.Info(err.Error())
