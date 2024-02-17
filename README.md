@@ -8,6 +8,7 @@
 * Temperature sensor [DS18B20](https://www.kjell.com/se/produkter/el-verktyg/utvecklingskit/arduino/tillbehor/temperatursensor-med-kabel-for-arduino-p87081)
 
 ## build
+Require go 1.22 or later
 ```bash
     cd sensor
     go install
