@@ -100,26 +100,9 @@ func main() {
 	ticker := time.NewTicker(time.Duration(interval) * time.Second)
 	defer ticker.Stop()
 
-	aliveInterval := os.Getenv("ALIVE")
-
-	if aliveInterval == "" || aliveInterval == "0" {
-		aliveInterval = "5"
-	}
-
-	i_alive_interval, err := strconv.Atoi(aliveInterval)
-
-	if err != nil {
-		logger.Error(err.Error())
-	}
-
-	aliveTicker := time.NewTicker(time.Duration(i_alive_interval) * time.Minute)
-	defer aliveTicker.Stop()
-
 	done := make(chan bool)
 
 	myWebservice := webservice.NewWebService(logger)
-
-	go alive(*logger, done, *aliveTicker)
 
 	go func() {
 		for {
@@ -134,6 +117,9 @@ func main() {
 						logger.Info(err.Error())
 						found = false
 						posted = true
+					} else {
+						logger.Error("Sensor not found", slog.String("path", path))
+						os.Exit(1)
 					}
 				} else {
 					found = true
