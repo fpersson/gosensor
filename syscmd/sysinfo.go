@@ -2,6 +2,7 @@ package syscmd
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -25,7 +26,7 @@ func ParseOsRelease(file string) (osrelease map[string]string, err error) {
 	readFile, err := os.Open(file)
 
 	if err != nil {
-		return result, err
+		return result, fmt.Errorf("could not open: %s", file)
 	}
 
 	defer readFile.Close()
@@ -36,9 +37,15 @@ func ParseOsRelease(file string) (osrelease map[string]string, err error) {
 
 	for fileScanner.Scan() {
 		line := fileScanner.Text()
-		value := strings.Split(line, "=")
-		result[value[0]] = strings.Trim(value[1], "\"")
+		
+		// OpenSuSE has changed the format of the os-release file
+		if strings.Contains(line, "=") {
+			value := strings.Split(line, "=")
+			result[value[0]] = strings.Trim(value[1], "\"")
+		}
 	}
+
+	fmt.Println(result)
 
 	return result, nil
 }
