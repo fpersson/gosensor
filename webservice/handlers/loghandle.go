@@ -20,7 +20,7 @@ func NewLogHandle(log *slog.Logger) *LogHandle {
 
 func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var data = &model.AllMessages{}
-	logHandle.log.Info("(OPEN): " + model.HttpDir + "templates/logPage.html")
+	logHandle.log.Info("(OPEN): " + "templates/logPage.html")
 	logPage := model.LogPage{}
 	osinfo, err := syscmd.ParseOsRelease(syscmd.OsReleasePath)
 
@@ -52,10 +52,10 @@ func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPage.AllMessages = *data
 
-	navbar := model.HttpDir + "templates/navbar.html"
-	footer := model.HttpDir + "templates/footer.html"
+	navbar := "templates/navbar.html"
+	footer := "templates/footer.html"
 
-	t, err := template.ParseFiles(model.HttpDir+"templates/logPage.html", navbar, footer)
+	t, err := template.ParseFS(content, "templates/logPage.html", navbar, footer)
 	if err != nil {
 		logHandle.log.Info(err.Error())
 	}

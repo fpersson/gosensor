@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"embed"
 	"html/template"
 	"net/http"
 
@@ -18,8 +19,11 @@ func NewIndexPage(log *slog.Logger) *IndexPage {
 	return &IndexPage{log}
 }
 
+//go:embed templates
+var content embed.FS
+
 func (indexPage *IndexPage) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	indexPage.log.Info("Open: " + model.HttpDir + "template/statusPage.html")
+	indexPage.log.Info("Open: " +  "templates/statusPage.html")
 	statusPage := model.StatusPage{}
 
 	osinfo, err := syscmd.ParseOsRelease(syscmd.OsReleasePath)
@@ -42,17 +46,17 @@ func (indexPage *IndexPage) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	statusPage.SystemdStatus = *data
-	var temp = model.HttpDir + "templates/error.html"
+	var temp =  "templates/error.html"
 
 	if data.Active {
 		indexPage.log.Info("Systemd service works")
-		temp = model.HttpDir + "templates/message.html"
+		temp =  "templates/message.html"
 	}
 
-	navbar := model.HttpDir + "templates/navbar.html"
-	footer := model.HttpDir + "templates/footer.html"
+	navbar :=  "templates/navbar.html"
+	footer :=  "templates/footer.html"
 
-	t, err := template.ParseFiles(model.HttpDir+"templates/statusPage.html", temp, navbar, footer)
+	t, err := template.ParseFS(content, "templates/statusPage.html", temp, navbar, footer)
 
 	if err != nil {
 		indexPage.log.Info(err.Error())

@@ -45,7 +45,5 @@ func ParseOsRelease(file string) (osrelease map[string]string, err error) {
 		}
 	}
 
-	fmt.Println(result)
-
 	return result, nil
 }

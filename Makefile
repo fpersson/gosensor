@@ -19,3 +19,7 @@ unittest: ## Build and run golang unittest.
 run: ## Build and run local sensor with fake sensor.
 	@echo "Build and run local sensor with fake sensor"
 	CONFIG=./testdata DEVICE=./fejksensor/ go run ./sensor
+
+run-bin: ## Build and run local sensor with fake sensor.
+	@echo "Build and run local sensor with fake sensor"
+	cd bin && CONFIG=./testdata DEVICE=./fejksensor/ ./sensor

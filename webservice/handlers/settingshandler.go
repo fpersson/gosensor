@@ -37,11 +37,11 @@ func (settingsHandler *SettingsHandler) ServeHTTP(w http.ResponseWriter, r *http
 	}
 
 	idxPage.Settings = data
-	settingsHandler.log.Info("(OPEN): " + model.HttpDir + "templates/settings.html")
+	settingsHandler.log.Info("(OPEN): " + "templates/settings.html")
 
-	navbar := model.HttpDir + "templates/navbar.html"
-	footer := model.HttpDir + "templates/footer.html"
-	t, err := template.ParseFiles(model.HttpDir+"templates/settings.html", navbar, footer)
+	navbar := "templates/navbar.html"
+	footer := "templates/footer.html"
+	t, err := template.ParseFS(content, "templates/settings.html", navbar, footer)
 
 	if err != nil {
 		settingsHandler.log.Info(err.Error())
