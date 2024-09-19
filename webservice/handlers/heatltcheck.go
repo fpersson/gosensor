@@ -25,5 +25,8 @@ func (healthCheck *HealthCheck) ServeHTTP(w http.ResponseWriter, r *http.Request
 	result := &Result{Status: "OK"}
 	w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(result)
+	err := json.NewEncoder(w).Encode(result)
+	if err != nil {
+		return 
+	}
 }

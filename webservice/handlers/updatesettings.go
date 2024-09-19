@@ -15,7 +15,7 @@ type UpdateSettings struct {
 	log *slog.Logger
 }
 
-// UpdateSettings function returning reference to UpdateSettings handle
+// NewUpdateSettings UpdateSettings function returning reference to UpdateSettings handle
 func NewUpdateSettings(log *slog.Logger) *UpdateSettings {
 	return &UpdateSettings{log}
 }

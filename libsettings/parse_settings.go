@@ -17,7 +17,12 @@ func ParseSettings(file string) (Settings, error) {
 		return result, nil
 	}
 
-	defer jsonFile.Close()
+	defer func(jsonFile *os.File) {
+		err := jsonFile.Close()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}(jsonFile)
 
 	byteValue, err := io.ReadAll(jsonFile)
 
@@ -25,7 +30,10 @@ func ParseSettings(file string) (Settings, error) {
 		return result, err
 	}
 
-	json.Unmarshal(byteValue, &result)
+	err = json.Unmarshal(byteValue, &result)
+	if err != nil {
+		return Settings{}, err
+	}
 
 	return result, nil
 }

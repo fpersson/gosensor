@@ -100,26 +100,26 @@ func main() {
 	ticker := time.NewTicker(time.Duration(interval) * time.Second)
 	defer ticker.Stop()
 
-	alive_interval := os.Getenv("ALIVE")
+	aliveInterval := os.Getenv("ALIVE")
 
-	if alive_interval == "" || alive_interval == "0" {
-		alive_interval = "5"
+	if aliveInterval == "" || aliveInterval == "0" {
+		aliveInterval = "5"
 	}
 
-	i_alive_interval, err := strconv.Atoi(alive_interval)
+	i_alive_interval, err := strconv.Atoi(aliveInterval)
 
 	if err != nil {
 		logger.Error(err.Error())
 	}
 
-	alive_ticker := time.NewTicker(time.Duration(i_alive_interval) * time.Minute)
-	defer alive_ticker.Stop()
+	aliveTicker := time.NewTicker(time.Duration(i_alive_interval) * time.Minute)
+	defer aliveTicker.Stop()
 
 	done := make(chan bool)
 
 	myWebservice := webservice.NewWebService(logger)
 
-	go alive(*logger, done, *alive_ticker)
+	go alive(*logger, done, *aliveTicker)
 
 	go func() {
 		for {

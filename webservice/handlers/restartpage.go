@@ -40,5 +40,8 @@ func (reboot *Reboot) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		reboot.log.Info(err.Error())
 	}
 
-	t.Execute(w, rebootPage)
+	err = t.Execute(w, rebootPage)
+	if err != nil {
+		return
+	}
 }
