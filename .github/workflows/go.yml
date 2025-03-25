@@ -16,7 +16,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: 1.22.0
+        go-version: 1.24.0
         check-latest: true
 
     - name: Init mods
@@ -25,14 +25,5 @@ jobs:
     - name: Build
       run:  cd ./sensor && go build -v ./...
 
-    - name: TestSensor
-      run: cd ./libsensor && go test -cover -v ./...
-
-    - name: TestSettings
-      run: cd ./libsettings && go test -cover -v ./...
-
-    - name: TestSysCmd
-      run: cd ./syscmd && go test -cover -v ./...
-
-    - name: TestHandlers
-      run: cd ./webservice/handlers && go test -cover -v ./...
+    - name: UnitTests
+      run: go test -cover -v ./...
