@@ -30,6 +30,8 @@ func NewRestartSensor() *RestartSensor {
 //
 // On error, responds with HTTP 500 and an error message.
 func (restartSensor *RestartSensor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// NOTE: This is not tested since it require root access to restart the service.
+	// to test this i need to mock the syscmd package.
 	slog.Info("Restart sensor.")
 	if r.Method == "GET" {
 		slog.Info("TODO: implement GET for RestartSensor")
