@@ -6,43 +6,48 @@ import (
 	"github.com/fpersson/gosensor/webservice/model"
 )
 
-// TestGetMenuStatusActive test if status page is active and all other pages are inactive.
+// TestGetMenuStatusActive tests if the status page is active and all other pages are inactive.
 func TestGetMenuStatusActive(t *testing.T) {
-	result := model.NavPages{}
-	var content = model.NavPage{}
+	// Helper function to create a NavPages structure
+	createNavPages := func(activePage string) model.NavPages {
+		result := model.NavPages{}
+		pages := []struct {
+			Name     string
+			Url      string
+			IsActive bool
+		}{
+			{"Status", "/status.html", activePage == "/status.html"},
+			{"Settings", "/settings.html", activePage == "/settings.html"},
+			{"Log", "/log.html", activePage == "/log.html"},
+			{"Restart", "/restart.html", activePage == "/restart.html"},
+		}
 
-	content.Name = "Status"
-	content.Url = "/status.html"
-	content.IsActive = true
-	result.NavPage = append(result.NavPage, content)
+		for _, page := range pages {
+			result.NavPage = append(result.NavPage, model.NavPage{
+				Name:     page.Name,
+				Url:      page.Url,
+				IsActive: page.IsActive,
+			})
+		}
+		return result
+	}
 
-	content.Name = "Settings"
-	content.Url = "/settings.html"
-	content.IsActive = false
-	result.NavPage = append(result.NavPage, content)
-
-	content.Name = "Log"
-	content.Url = "/log.html"
-	content.IsActive = false
-	result.NavPage = append(result.NavPage, content)
-
-	content.Name = "Restart"
-	content.Url = "/restart.html"
-	content.IsActive = false
-	result.NavPage = append(result.NavPage, content)
-
+	// Define test cases
 	cases := []struct {
 		in    string
 		wants model.NavPages
 	}{
-		{"/status.html", result},
+		{"/status.html", createNavPages("/status.html")},
 	}
 
+	// Execute test cases
 	for _, c := range cases {
 		got := GetMenu(c.in)
-		if got.NavPage[0].IsActive != c.wants.NavPage[0].IsActive {
-			t.Errorf("GetMenu(%q) == %t, wants %t", c.in, got.NavPage[0].IsActive, c.wants.NavPage[0].IsActive)
+		for i, page := range got.NavPage {
+			if page.IsActive != c.wants.NavPage[i].IsActive {
+				t.Errorf("GetMenu(%q) == %t for page %q, wants %t",
+					c.in, page.IsActive, page.Name, c.wants.NavPage[i].IsActive)
+			}
 		}
 	}
-
 }

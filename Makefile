@@ -23,3 +23,7 @@ run: ## Build and run local sensor with fake sensor.
 run-bin: ## Build and run local sensor with fake sensor.
 	@echo "Build and run local sensor with fake sensor"
 	cd bin && CONFIG=./testdata DEVICE=./fejksensor/ ./sensor
+
+doc: ## Generate documentation.
+	@echo "Generate documentation."
+	go tool doc2go ./...

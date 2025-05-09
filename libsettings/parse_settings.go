@@ -1,3 +1,5 @@
+// Package libsettings provides utilities for managing and parsing configuration settings.
+// It includes functionality to read JSON configuration files and define the structure of settings.
 package libsettings
 
 import (
@@ -7,6 +9,14 @@ import (
 	"os"
 )
 
+// ParseSettings reads a JSON file and unmarshals its content into a Settings struct.
+//
+// Parameters:
+//   - file: The path to the JSON file to be parsed.
+//
+// Returns:
+//   - Settings: The parsed settings object.
+//   - error: An error object if any issues occur during file reading or unmarshalling.
 func ParseSettings(file string) (Settings, error) {
 	var result Settings
 

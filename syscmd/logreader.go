@@ -9,6 +9,11 @@ import (
 	"github.com/fpersson/gosensor/webservice/model"
 )
 
+// ReadLog retrieves log messages for the "tempsensor.service" systemd service using `journalctl`.
+//
+// Returns:
+//   - *model.AllMessages: A struct containing the log messages.
+//   - error: An error object if the command execution fails.
 func ReadLog() (data *model.AllMessages, err error) {
 	retval := model.AllMessages{}
 	prg := "journalctl"
@@ -29,6 +34,14 @@ func ReadLog() (data *model.AllMessages, err error) {
 	return &retval, nil
 }
 
+// ReadLogFile reads log messages from a specified log file.
+//
+// Parameters:
+//   - logfile: The path to the log file.
+//
+// Returns:
+//   - *model.AllMessages: A struct containing the log messages.
+//   - error: An error object if file reading fails.
 func ReadLogFile(logfile string) (data *model.AllMessages, err error) {
 	retval := model.AllMessages{}
 	readFile, err := os.Open(logfile)
@@ -49,6 +62,11 @@ func ReadLogFile(logfile string) (data *model.AllMessages, err error) {
 	return &retval, nil
 }
 
+// ReadStatus retrieves the status of the "tempsensor.service" systemd service using `systemctl`.
+//
+// Returns:
+//   - *model.SystemdStatus: A struct containing the service's active status and status messages.
+//   - error: An error object if the command execution fails.
 func ReadStatus() (status *model.SystemdStatus, err error) {
 	retval := model.SystemdStatus{}
 

@@ -1,6 +1,8 @@
 package libsensor
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestReadSensor(t *testing.T) {
 	cases := []struct {
@@ -20,18 +22,23 @@ func TestReadSensor(t *testing.T) {
 }
 
 func TestParseValue(t *testing.T) {
-	cases := []struct {
-		in   string
-		want float64
+	tests := []struct {
+		input    string
+		expected float64
+		hasError bool
 	}{
-		{"apa\nfoo=1234", 1.234},
-		{"apa\nfoo=bar", 0},
+		{"line1\nvalue=12345", 12.345, false},
+		{"line1\nvalue=abc", 0, true},
+		{"line1", 0, true},
 	}
 
-	for _, c := range cases {
-		got, _ := parse_value(c.in)
-		if got != c.want {
-			t.Errorf("parse_value(%q) == %f, want %f", c.in, got, c.want)
+	for _, test := range tests {
+		result, err := parseValue(test.input)
+		if test.hasError && err == nil {
+			t.Errorf("expected error for input %q, got nil", test.input)
+		}
+		if !test.hasError && result != test.expected {
+			t.Errorf("expected %f for input %q, got %f", test.expected, test.input, result)
 		}
 	}
 }

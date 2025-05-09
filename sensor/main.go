@@ -22,13 +22,26 @@ import (
 
 const configfile = "tempsensor/settings.json"
 
-// /TODO Move this
+// exists checks if a file or directory exists at the given path.
+//
+// Parameters:
+//   - path: The file or directory path to check.
+//
+// Returns:
+//   - true if the file or directory exists, false otherwise.
 func exists(path string) bool {
 	_, err := os.Stat(path)
 	return !errors.Is(err, os.ErrNotExist)
 }
 
-// /TODO Move this
+// findConfigFile searches for the configuration file in the provided paths.
+// It returns the first found configuration file path or an empty string if not found.
+//
+// Parameters:
+//   - configpaths: A colon-separated string of paths to search.
+//
+// Returns:
+//   - confile: The path to the found configuration file or an empty string.
 func findConfigFile(configpaths string) (confile string) {
 	v := strings.Split(configpaths, ":")
 
@@ -42,6 +55,9 @@ func findConfigFile(configpaths string) (confile string) {
 	return ""
 }
 
+// main is the entry point of the application. It initializes the logger,
+// loads configuration, starts the web service, and periodically reads sensor data.
+// It also handles graceful shutdown on receiving termination signals.
 func main() {
 	err := godotenv.Load()
 	if err != nil {
