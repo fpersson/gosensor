@@ -6,21 +6,28 @@ import (
 	"log/slog"
 )
 
-// alive logs a periodic "alive" message at a given interval using the provided logger.
+// alive logs a periodic "alive" message at a given interval using slog.
 // It listens for a signal on the `done` channel to terminate the function.
 //
 // Parameters:
-//   - log: The logger to use for logging messages.
-//   - done: A read-only channel used to signal termination of the function.
-//   - ticker: A ticker that defines the interval for logging "alive" messages.
-func alive(log slog.Logger, done <-chan bool, ticker time.Ticker) {
-	log.Info("Calling Alive")
+//   - done: A read-only channel (chan bool) used to signal termination of the function.
+//   - ticker: A time.Ticker that defines the interval for logging "alive" messages.
+//
+// Example usage:
+//
+//	done := make(chan bool)
+//	ticker := time.NewTicker(10 * time.Second)
+//	go alive(done, *ticker)
+//	// ... later ...
+//	done <- true
+func alive(done <-chan bool, ticker time.Ticker) {
+	slog.Info("Calling Alive")
 	for {
 		select {
 		case <-done:
 			return
 		case <-ticker.C:
-			log.Info("alive")
+			slog.Info("alive")
 		}
 	}
 }

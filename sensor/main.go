@@ -77,9 +77,9 @@ func main() {
 		fmt.Println("Not using file logger")
 	}
 
-	logger := slog.New(loggHandler)
+	slog.New(loggHandler)
 
-	logger.Info("Start")
+	slog.Info("Start")
 	configdir := os.Getenv("CONFIG")
 
 	if configdir == "" {
@@ -91,7 +91,7 @@ func main() {
 	conf, err := libsettings.ParseSettings(model.SettingsPath)
 
 	if err != nil {
-		logger.Info(err.Error())
+		slog.Info(err.Error())
 		os.Exit(0)
 	}
 
@@ -103,7 +103,7 @@ func main() {
 
 	path := device + conf.Sensor + "/w1_slave"
 
-	logger.Info(path)
+	slog.Info(path)
 	interval, err := strconv.ParseInt(conf.Influx.Interval, 10, 0)
 
 	if err != nil {
@@ -118,7 +118,7 @@ func main() {
 
 	done := make(chan bool)
 
-	myWebservice := webservice.NewWebService(logger)
+	myWebservice := webservice.NewWebService()
 
 	go func() {
 		for {
@@ -130,11 +130,11 @@ func main() {
 
 				if err != nil {
 					if found {
-						logger.Info(err.Error())
+						slog.Info(err.Error())
 						found = false
 						posted = true
 					} else {
-						logger.Error("Sensor not found", slog.String("path", path))
+						slog.Error("Sensor not found", slog.String("path", path))
 						os.Exit(1)
 					}
 				} else {
@@ -142,7 +142,7 @@ func main() {
 					err = libsensor.Post(conf, val)
 					if err != nil {
 						if posted {
-							logger.Info(err.Error())
+							slog.Info(err.Error())
 							posted = false
 							found = true
 						}
@@ -158,6 +158,6 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGTERM)
 
 	sig := <-sigChan
-	logger.Info(sig.String())
+	slog.Info(sig.String())
 	done <- true
 }

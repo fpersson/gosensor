@@ -1,23 +1,23 @@
 package handlers
 
 import (
-	"net/http"
-
 	"log/slog"
+	"net/http"
 
 	"github.com/fpersson/gosensor/syscmd"
 )
 
 // RestartSensor handles HTTP requests to restart the sensor service.
-// It uses a logger to log information and errors during request processing.
+// It implements http.Handler and uses slog for logging.
 type RestartSensor struct {
-	log *slog.Logger
 }
 
 // NewRestartSensor creates and returns a new RestartSensor instance.
-// It takes a logger as a parameter to enable logging.
-func NewRestartSensor(log *slog.Logger) *RestartSensor {
-	return &RestartSensor{log}
+//
+// Returns:
+//   - *RestartSensor: a new RestartSensor handler.
+func NewRestartSensor() *RestartSensor {
+	return &RestartSensor{}
 }
 
 // ServeHTTP processes an incoming HTTP request to restart the sensor service.
@@ -25,18 +25,20 @@ func NewRestartSensor(log *slog.Logger) *RestartSensor {
 // it attempts to restart the sensor service and redirects to the index page upon success.
 //
 // Parameters:
-//   - w: The HTTP response writer used to send the response.
-//   - r: The HTTP request received from the client.
+//   - w: http.ResponseWriter used to send the response.
+//   - r: *http.Request received from the client.
+//
+// On error, responds with HTTP 500 and an error message.
 func (restartSensor *RestartSensor) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	restartSensor.log.Info("Restart sensor.")
+	slog.Info("Restart sensor.")
 	if r.Method == "GET" {
-		restartSensor.log.Info("TODO: implement GET for RestartSensor")
+		slog.Info("TODO: implement GET for RestartSensor")
 		http.Redirect(w, r, "/index.html", http.StatusMovedPermanently)
 	} else {
-		restartSensor.log.Info("Restarting sensor.")
+		slog.Info("Restarting sensor.")
 		err := syscmd.CmdRestart(syscmd.Tempsensorservice)
 		if err != nil {
-			restartSensor.log.Error("Failed to restart sensor service", "error", err)
+			slog.Error("Failed to restart sensor service", "error", err)
 			http.Error(w, "Failed to restart sensor service", http.StatusInternalServerError)
 			return
 		}

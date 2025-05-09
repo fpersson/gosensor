@@ -10,15 +10,14 @@ import (
 )
 
 type WebService struct {
-	logger *slog.Logger
 }
 
-func NewWebService(logger *slog.Logger) *WebService {
-	return &WebService{logger}
+func NewWebService() *WebService {
+	return &WebService{}
 }
 
 func (webservice *WebService) Start() {
-	webservice.logger.Info("Start called.")
+	slog.Info("Start called.")
 
 	serveMux := http.NewServeMux()
 	server := &http.Server{
@@ -29,13 +28,13 @@ func (webservice *WebService) Start() {
 		WriteTimeout: 1 * time.Second,
 	}
 
-	healtCheck := handlers.NewHealthCheck(webservice.logger)
-	indexPage := handlers.NewIndexPage(webservice.logger)
-	settingsPage := handlers.NewSettingsHandler(webservice.logger)
-	updatePage := handlers.NewUpdateSettings(webservice.logger)
-	logPage := handlers.NewLogHandle(webservice.logger)
-	restartService := handlers.NewRestartSensor(webservice.logger)
-	rebootPage := handlers.NewReboot(webservice.logger)
+	healtCheck := handlers.NewHealthCheck()
+	indexPage := handlers.NewIndexPage()
+	settingsPage := handlers.NewSettingsHandler()
+	updatePage := handlers.NewUpdateSettings()
+	logPage := handlers.NewLogHandle()
+	restartService := handlers.NewRestartSensor()
+	rebootPage := handlers.NewReboot()
 	serveMux.Handle("/healthcheck", healtCheck)
 	serveMux.Handle("/health_check", healtCheck)
 	serveMux.Handle("/index.html", indexPage)
@@ -49,6 +48,6 @@ func (webservice *WebService) Start() {
 	err := server.ListenAndServe()
 
 	if err != nil {
-		webservice.logger.Error(err.Error())
+		slog.Error(err.Error())
 	}
 }

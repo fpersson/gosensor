@@ -8,28 +8,34 @@ import (
 )
 
 // Result represents the status of the health check response.
-// It contains a single field "Status" which indicates the health status of the service.
+// The "result" field in the JSON output indicates the health status of the service.
 type Result struct {
 	Status string `json:"result"`
 }
 
-// HealthCheck handles requests for service health.
-// It implements the http.Handler interface and logs health check requests.
+// HealthCheck implements http.Handler for the health check endpoint.
+// It logs health check requests using slog.
 type HealthCheck struct {
-	logger *slog.Logger
 }
 
-// NewHealthCheck creates a new instance of HealthCheck.
-// It takes a logger as a parameter to log health check events.
-func NewHealthCheck(logger *slog.Logger) *HealthCheck {
-	logger.Info("New HealthCheck created")
-	return &HealthCheck{logger}
+// NewHealthCheck creates a new HealthCheck handler.
+// Logs creation of the handler using slog.
+//
+// Returns:
+//   - *HealthCheck: a new HealthCheck handler.
+func NewHealthCheck() *HealthCheck {
+	slog.Info("New HealthCheck created")
+	return &HealthCheck{}
 }
 
-// ServeHTTP handles HTTP requests for the health check endpoint.
-// It responds with a JSON object containing the health status of the service.
+// ServeHTTP handles HTTP GET requests for the health check endpoint.
+// Responds with a JSON object containing the health status of the service.
+//
+// Parameters:
+//   - w: http.ResponseWriter to write the response.
+//   - r: *http.Request representing the incoming request.
 func (healthCheck *HealthCheck) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	healthCheck.logger.Info("HealthCheck called")
+	slog.Info("HealthCheck called")
 	result := &Result{Status: "OK"}
 	w.Header().Set("Content-Type", "application/json")
 

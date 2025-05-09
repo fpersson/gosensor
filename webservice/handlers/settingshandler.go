@@ -2,24 +2,24 @@ package handlers
 
 import (
 	"html/template"
-	"net/http"
-
 	"log/slog"
+	"net/http"
 
 	"github.com/fpersson/gosensor/syscmd"
 	"github.com/fpersson/gosensor/webservice/model"
 )
 
 // SettingsHandler handles HTTP requests to display and manage application settings.
-// It uses a logger to log information and errors during request processing.
+// It implements http.Handler and uses slog for logging.
 type SettingsHandler struct {
-	log *slog.Logger
 }
 
 // NewSettingsHandler creates and returns a new SettingsHandler instance.
-// It takes a logger as a parameter to enable logging.
-func NewSettingsHandler(log *slog.Logger) *SettingsHandler {
-	return &SettingsHandler{log}
+//
+// Returns:
+//   - *SettingsHandler: a new SettingsHandler handler.
+func NewSettingsHandler() *SettingsHandler {
+	return &SettingsHandler{}
 }
 
 // ServeHTTP processes an incoming HTTP request and renders the settings page.
@@ -27,15 +27,17 @@ func NewSettingsHandler(log *slog.Logger) *SettingsHandler {
 // generates an HTML page using embedded templates.
 //
 // Parameters:
-//   - w: The HTTP response writer used to send the response.
-//   - r: The HTTP request received from the client.
+//   - w: http.ResponseWriter used to send the response.
+//   - r: *http.Request received from the client.
+//
+// The rendered page includes settings, OS info, navigation, and footer.
 func (settingsHandler *SettingsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	idxPage := model.IndexPage{}
 	osinfo, err := syscmd.ParseOsRelease(syscmd.OsReleasePath)
 
 	// Log error if unable to parse OS release information
 	if err != nil {
-		settingsHandler.log.Info(err.Error())
+		slog.Info(err.Error())
 	}
 
 	// Populate footer data with OS information
@@ -48,11 +50,11 @@ func (settingsHandler *SettingsHandler) ServeHTTP(w http.ResponseWriter, r *http
 	// Fetch all settings and log error if any
 	data, err := model.ListAllSettings()
 	if err != nil {
-		settingsHandler.log.Info(err.Error())
+		slog.Info(err.Error())
 	}
 
 	idxPage.Settings = data
-	settingsHandler.log.Info("(OPEN): " + "templates/settings.html")
+	slog.Info("(OPEN): " + "templates/settings.html")
 
 	// Define template files
 	navbar := "templates/navbar.html"
@@ -61,11 +63,11 @@ func (settingsHandler *SettingsHandler) ServeHTTP(w http.ResponseWriter, r *http
 
 	// Log error if template parsing fails
 	if err != nil {
-		settingsHandler.log.Info(err.Error())
+		slog.Info(err.Error())
 	}
 
 	// Execute the template and handle potential errors
 	if err := t.Execute(w, idxPage); err != nil {
-		settingsHandler.log.Info("Template execution failed: " + err.Error())
+		slog.Info("Template execution failed: " + err.Error())
 	}
 }

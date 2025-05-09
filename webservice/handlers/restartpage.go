@@ -11,15 +11,16 @@ import (
 )
 
 // Reboot handles HTTP requests to display the reboot page.
-// It uses a logger to log information and errors during request processing.
+// It implements http.Handler and uses slog for logging.
 type Reboot struct {
-	log *slog.Logger
 }
 
 // NewReboot creates and returns a new Reboot instance.
-// It takes a logger as a parameter to enable logging.
-func NewReboot(log *slog.Logger) *Reboot {
-	return &Reboot{log}
+//
+// Returns:
+//   - *Reboot: a new Reboot handler.
+func NewReboot() *Reboot {
+	return &Reboot{}
 }
 
 // ServeHTTP processes an incoming HTTP request and renders the reboot page.
@@ -27,16 +28,18 @@ func NewReboot(log *slog.Logger) *Reboot {
 // generates an HTML page using embedded templates.
 //
 // Parameters:
-//   - w: The HTTP response writer used to send the response.
-//   - r: The HTTP request received from the client.
+//   - w: http.ResponseWriter used to send the response.
+//   - r: *http.Request received from the client.
+//
+// The rendered page includes reboot info, OS info, navigation, and footer.
 func (reboot *Reboot) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	reboot.log.Info("(OPEN): " + "templates/restartPage.html")
+	slog.Info("(OPEN): " + "templates/restartPage.html")
 	rebootPage := model.RebootPage{}
 	osinfo, err := syscmd.ParseOsRelease(syscmd.OsReleasePath)
 
 	// Log and handle error if OS information cannot be parsed
 	if err != nil {
-		reboot.log.Error("Failed to parse OS release info", "error", err)
+		slog.Error("Failed to parse OS release info", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -52,7 +55,7 @@ func (reboot *Reboot) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Log and handle error if templates cannot be parsed
 	if err != nil {
-		reboot.log.Error("Failed to parse templates", "error", err)
+		slog.Error("Failed to parse templates", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -60,7 +63,7 @@ func (reboot *Reboot) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Execute the template and write the response
 	err = t.Execute(w, rebootPage)
 	if err != nil {
-		reboot.log.Error("Failed to execute template", "error", err)
+		slog.Error("Failed to execute template", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }

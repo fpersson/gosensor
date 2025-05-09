@@ -11,15 +11,16 @@ import (
 )
 
 // LogHandle handles HTTP requests to display log information.
-// It uses a logger to log information and errors during request processing.
+// It implements http.Handler and uses slog for logging.
 type LogHandle struct {
-	log *slog.Logger
 }
 
 // NewLogHandle creates and returns a new LogHandle instance.
-// It takes a logger as a parameter to enable logging.
-func NewLogHandle(log *slog.Logger) *LogHandle {
-	return &LogHandle{log}
+//
+// Returns:
+//   - *LogHandle: a new LogHandle handler.
+func NewLogHandle() *LogHandle {
+	return &LogHandle{}
 }
 
 // ServeHTTP processes an incoming HTTP request and renders a log page.
@@ -27,11 +28,13 @@ func NewLogHandle(log *slog.Logger) *LogHandle {
 // generates an HTML page using embedded templates.
 //
 // Parameters:
-//   - w: The HTTP response writer used to send the response.
-//   - r: The HTTP request received from the client.
+//   - w: http.ResponseWriter used to send the response.
+//   - r: *http.Request received from the client.
+//
+// The rendered page includes log messages, OS info, navigation, and footer.
 func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var data = &model.AllMessages{}
-	logHandle.log.Info("(OPEN): " + "templates/logPage.html")
+	slog.Info("(OPEN): " + "templates/logPage.html")
 
 	// Initialize the log page structure
 	logPage := model.LogPage{}
@@ -39,7 +42,7 @@ func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// Log and handle error if OS information cannot be parsed
 	if err != nil {
-		logHandle.log.Error("Failed to parse OS release info", "error", err)
+		slog.Error("Failed to parse OS release info", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -51,23 +54,23 @@ func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Generate navigation menu based on the current URL path
 	logPage.NavPages = GetMenu(r.URL.Path)
 
-	logHandle.log.Info("Reading logs")
+	slog.Info("Reading logs")
 	if model.LogDir == "" {
 		// Read logs from systemd if no log directory is specified
-		logHandle.log.Info("Reading from systemd")
+		slog.Info("Reading from systemd")
 		logContent, err := syscmd.ReadLog()
 		if err != nil {
-			logHandle.log.Error("Failed to read logs from systemd", "error", err)
+			slog.Error("Failed to read logs from systemd", "error", err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 		data = logContent
 	} else {
 		// Read logs from the specified log directory
-		logHandle.log.Info("Read log:", "file", model.LogDir)
+		slog.Info("Read log:", "file", model.LogDir)
 		logContent, err := syscmd.ReadLogFile(model.LogDir)
 		if err != nil {
-			logHandle.log.Error("Failed to read logs from file", "file", model.LogDir, "error", err)
+			slog.Error("Failed to read logs from file", "file", model.LogDir, "error", err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
@@ -84,14 +87,14 @@ func (logHandle *LogHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Parse the templates
 	t, err := template.ParseFS(content, "templates/logPage.html", navbar, footer)
 	if err != nil {
-		logHandle.log.Error("Failed to parse templates", "error", err)
+		slog.Error("Failed to parse templates", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	// Execute the template and write the response
 	if err := t.Execute(w, logPage); err != nil {
-		logHandle.log.Error("Failed to execute template", "error", err)
+		slog.Error("Failed to execute template", "error", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
