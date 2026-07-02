@@ -1,6 +1,6 @@
 module github.com/fpersson/gosensor
 
-go 1.24
+go 1.25.0
 
 require (
 	github.com/influxdata/influxdb-client-go/v2 v2.14.0
@@ -17,11 +17,12 @@ require (
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
 	github.com/peterbourgon/ff/v3 v3.4.0 // indirect
 	go.abhg.dev/doc2go v0.8.1 // indirect
-	golang.org/x/mod v0.17.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
-	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
+	golang.org/x/mod v0.35.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/sync v0.20.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
+	golang.org/x/tools v0.44.0 // indirect
+	golang.org/x/tools/go/packages/packagestest v0.1.1-deprecated // indirect
 )
 
 tool go.abhg.dev/doc2go
